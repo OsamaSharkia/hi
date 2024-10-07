@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Chirper Lite API
+  version: 0.1.0
+  description: A simple API for basic Chirper functionality
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /chirps:
+    get:
+      summary: Get all chirps
+      responses:
+        '200':
+          description: A list of chirps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chirp'
+    post:
+      summary: Create a new chirp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chirp'
+      responses:
+        '201':
+          description: Chirp created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chirp'
+
+  /chirps/{id}:
+    get:
+      summary: Get a chirp by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the chirp to get
+      responses:
+        '200':
+          description: A chirp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chirp'
+        '404':
+          description: Chirp not found
+    delete:
+      summary: Delete a chirp by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the chirp to delete
+      responses:
+        '204':
+          description: Chirp deleted
+        '404':
+          description: Chirp not found
+    put:
+      summary: Update a chirp by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the chirp to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chirp'
+      responses:
+        '200':
+          description: Chirp updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chirp'
+        '404':
+          description: Chirp not found
+
+components:
+  schemas:
+    Chirp:
+      type: object
+      properties:
+        id:
+          type: integer
+        author_name:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
